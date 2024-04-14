@@ -45,7 +45,6 @@ class Particle:
         normal_displacement = displacement.dot(unit_boundary_normal)
 
         self.position = boundary_point - (self.position - boundary_point)
-        print(self.material.bounce)
         self.previous_pos = self.position + unit_boundary_normal * (self.material.bounce * normal_displacement)
 
     def wall_boundaries(self):

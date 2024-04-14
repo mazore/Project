@@ -1,10 +1,14 @@
 import pygame as pg
 
 class Body:
+    NUM_BODIES = 0
+
     def __init__(self, particles, constraints, color=(48, 48, 48)):
         self.particles = particles
         self.constraints = constraints
         self.color = color
+        self.id = Body.NUM_BODIES
+        Body.NUM_BODIES += 1
 
     def apply_initial_impulses(self):
         for particle in self.particles:
