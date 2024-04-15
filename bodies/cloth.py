@@ -6,8 +6,9 @@ from constraint import Constraint
 from material import Material
 from vector2 import Vector2
 
+# Optimal steps per frame: 2
 class Cloth(Body):
-    def __init__(self, center_x, center_y, num_rows, num_cols, node_spacing, stiffness=0.05, initial_impulse=None, **kwargs):
+    def __init__(self, center_x, center_y, num_rows, num_cols, node_spacing, stiffness=1, initial_impulse=None, **kwargs):
         fixed_material = Material(0, 0, 0)
         material = Material(0.2, 0.2, 1)
 
@@ -41,7 +42,8 @@ class Cloth(Body):
                 particles[-1][i].initial_impulse = initial_impulse  # Apply initial impulse to bottom row of the cloth
         elif initial_impulse == 'randomized':
             for i in range(num_cols):  # Apply random impulse to each particle in the bottom row of the cloth
-                particles[-1][i].initial_impulse = Vector2(5, random.random() * -10)
+                # particles[-1][i].initial_impulse = Vector2(5, random.random() * -10)
+                particles[-1][i].force(Vector2(5, random.random() * -500))
 
         # Flatten particles 2d array into a 1d array
         particles = [particle for row in particles for particle in row]

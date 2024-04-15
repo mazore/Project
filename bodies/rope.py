@@ -4,7 +4,7 @@ from constraint import Constraint
 from material import Material
 
 class Rope(Body):
-    def __init__(self, x, y, num_nodes, node_spacing, initial_impulse=None, **kwargs):
+    def __init__(self, x, y, num_nodes, node_spacing, initial_impulse=None, stiffness=0.05, **kwargs):
         fixed_material = Material(0, 0, 0)
         material = Material(0.2, 0.2, 1)
 
@@ -15,7 +15,7 @@ class Rope(Body):
             particle_y = y + i * node_spacing
             particle = Particle(material, x, particle_y, 4)
             if previous is not None:
-                constraints.append(Constraint(previous, particle, 0.05, True))
+                constraints.append(Constraint(previous, particle, stiffness, True))
             particles.append(particle)
             previous = particle
 

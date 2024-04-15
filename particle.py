@@ -15,6 +15,10 @@ class Particle:
     def accelerate(self, vector):
         self.acceleration += vector
 
+    def force(self, force):
+        if self.material.mass > 0:
+            self.acceleration += force / self.material.mass
+
     def impulse(self, vector):
         if self.material.mass != 0:
             self.position += vector / self.material.mass
@@ -34,7 +38,14 @@ class Particle:
     def reset_acceleration(self):
         self.acceleration = Vector2(0, 0)
 
-    def simulate_boundaries(self, boundaries):
+    def simulate_boundaries(self, static_boundaries, other_bodies):
+        boundaries = [*static_boundaries]
+
+        for other_body in other_bodies:
+            for constraint in other_body.constraints:
+                if constraint.is_boundary:
+                    boundaries.append(constraint.get_boundary())
+
         for boundary in boundaries:
             if boundary.should_collide(self.position):
                 self.adjust_position(boundary.normal, boundary.collision_point(self.position))
