@@ -5,8 +5,9 @@ from parameters import Parameters
 from particle import Particle
 
 class Square(Body):
-    def __init__(self, center_x, center_y, width, height, bounciness=0.2, stiffness=0.05, initial_impulse=None, **kwargs):
-        material = Material(0.2, bounciness, 1)
+    def __init__(self, center_x, center_y, width, height, mass=20, bounciness=0.2, stiffness=0.05, initial_impulse=None, **kwargs):
+        num_particles = 4
+        material = Material(0.2, bounciness, mass / num_particles)
         particles = [
             Particle(material, center_x - width / 2, center_y + height / 2, 3),
             Particle(material, center_x - width / 2, center_y - height / 2, 3),

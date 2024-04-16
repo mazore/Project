@@ -4,9 +4,9 @@ from constraint import Constraint
 from material import Material
 
 class Rope(Body):
-    def __init__(self, x, y, num_nodes, node_spacing, initial_impulse=None, stiffness=0.05, **kwargs):
+    def __init__(self, x, y, num_nodes, node_spacing, mass=10, initial_impulse=None, stiffness=0.05, **kwargs):
         fixed_material = Material(0, 0, 0)
-        material = Material(0.2, 0.2, 1)
+        material = Material(0.2, 0.2, mass / num_nodes)
 
         particles = []
         constraints = []

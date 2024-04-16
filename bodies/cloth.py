@@ -8,9 +8,9 @@ from vector2 import Vector2
 
 # Optimal steps per frame: 2
 class Cloth(Body):
-    def __init__(self, center_x, center_y, num_rows, num_cols, node_spacing, stiffness=1, initial_impulse=None, **kwargs):
+    def __init__(self, center_x, center_y, num_rows, num_cols, node_spacing, mass=100, stiffness=1, initial_impulse=None, **kwargs):
         fixed_material = Material(0, 0, 0)
-        material = Material(0.2, 0.2, 1)
+        material = Material(0.2, 0.2, mass / num_rows / num_cols)
 
         left_x = center_x - num_cols * node_spacing / 2
         top_y = center_y - num_rows * node_spacing / 2

@@ -1,6 +1,7 @@
 import math
 import pygame as pg
 import time
+from bodies import *
 from boundary import Boundary
 from parameters import Parameters
 from vector2 import Vector2
@@ -40,6 +41,9 @@ class Simulation:
                 if event.type == pg.QUIT:
                     pg.quit()
                     exit()
+                # if event.type == pg.MOUSEBUTTONDOWN:
+                #     if event.button == 3:
+                #         self.bodies.append(Square(pg.mouse.get_pos()[0], pg.mouse.get_pos()[1], 100, 100, stiffness=0.03))
             self.simulate()
             self.render()
             pg.display.update()
@@ -79,8 +83,6 @@ class Simulation:
                     self.grabbed_particle = closest[0]
             if self.grabbed_particle is not None:
                 mouse_pos = Vector2(*pg.mouse.get_pos())
-                # self.grabbed_particle.position = mouse_pos
-                # self.grabbed_particle.previous_pos = mouse_pos
                 force = (mouse_pos - self.grabbed_particle.position) * Parameters.GRAB_STRENGTH
                 self.grabbed_particle.force(force)
         else:

@@ -9,8 +9,12 @@ from particle import Particle
 class BallBase(Body):
     def __init__(self, center_x, center_y, size,
                  num_steps, stiffness_outer, stiffness_inner, skin_size,
-                 bounciness=0.2, initial_impulse=None, **kwargs):
-        material = Material(1, bounciness, 1)
+                 bounciness=0.2, initial_impulse=None, mass=20, **kwargs):
+
+        num_particles = num_steps * 2 + 1
+        print(mass / num_particles)
+        material = Material(1, bounciness, mass / num_particles)
+        # material = Material(1, bounciness, 1)
         particles = []
         constraints = []
 

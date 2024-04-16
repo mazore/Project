@@ -1,6 +1,7 @@
 from bodies import *
 from parameters import Parameters
 import random
+import pygame as pg
 from simulation import Simulation
 from vector2 import Vector2
 
@@ -23,7 +24,6 @@ def main():
         get_simulation_simple_rope,
         get_simulation_rope_and_balls_collisions,
         get_simulation_cloth,
-        get_simulation_sandbox
     ][int(option) - 1]()
 
     simulation.mainloop()
@@ -47,7 +47,7 @@ def get_simulation_simple_square():
         Square(
             screen_center.x, screen_center.y / 2, 200, 200,
             initial_impulse=Vector2(-random.uniform(-10, 10), -10),
-            stiffness=0.02
+            stiffness=0.03
         ),
     ], steps_per_frame=8)
 
@@ -55,7 +55,7 @@ def get_simulation_simple_ball():
     return Simulation([
         BallSimple(
             screen_center.x / 2, screen_center.y, 100,
-            initial_impulse=Vector2(50, -30),
+            initial_impulse=Vector2(50, -30)
         ),
     ], steps_per_frame=10)
 
@@ -63,7 +63,7 @@ def get_simulation_more_complex_ball():
     return Simulation([
         BallComplex(
             screen_center.x / 2, screen_center.y / 2, 100,
-            initial_impulse=Vector2(50, 50), bounciness=1, stiffness=1
+            initial_impulse=Vector2(0, 0), bounciness=1, stiffness=0.25, mass=15
         ),
     ], steps_per_frame=18)
 
@@ -84,12 +84,13 @@ def get_simulation_square_and_ball_collisions():
 
 def get_simulation_simple_rope():
     return Simulation([
-
+        Rope(screen_center.x, screen_center.y / 2, 10, 40, stiffness=0.1, initial_impulse=Vector2(10, 0))
     ], steps_per_frame=10)
 
 def get_simulation_rope_and_balls_collisions():
     return Simulation([
-        Rope(screen_center.x, screen_center.y / 2, 10, 40, Vector2(10, 0), stiffness=1)
+        Rope(screen_center.x, screen_center.y / 2, 10, 40, initial_impulse=Vector2(10, 0)),
+        BallSimple(screen_center.x / 2, screen_center.y / 2, 100, initial_impulse=Vector2(10, 0)),
     ], steps_per_frame=10)
 
 def get_simulation_cloth():
@@ -99,12 +100,6 @@ def get_simulation_cloth():
             initial_impulse='randomized'
         ),
     ], steps_per_frame=2)
-
-def get_simulation_sandbox():
-    return Simulation([
-
-    ], steps_per_frame=10)
-
 
 if __name__ == '__main__':
     main()
