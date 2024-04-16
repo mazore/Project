@@ -12,6 +12,6 @@ def simple_square():
         Square(
             screen_center.x, screen_center.y / 2, 200, 200,
             initial_impulse=Vector2(-random.uniform(-10, 10), -10),
-            stiffness=0.03
+            stiffness=0.08
         ),
     ], steps_per_frame=8)
