@@ -7,12 +7,15 @@ from parameters import Parameters
 from particle import Particle
 
 class BallBase(Body):
+    """The base class for two (or more) types of balls. A configuration with two layers of skins
+    (outer and inner), that are connected by more stiff constraints, and a point in the middle that
+    is connected to all the particles of the inner skin with a less stiff constraint.
+    """
     def __init__(self, center_x, center_y, size,
                  num_steps, stiffness_outer, stiffness_inner, skin_size,
                  bounciness=0.2, initial_impulse=None, mass=20, **kwargs):
 
         num_particles = num_steps * 2 + 1
-        print(mass / num_particles)
         material = Material(1, bounciness, mass / num_particles)
         # material = Material(1, bounciness, 1)
         particles = []

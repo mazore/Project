@@ -1,6 +1,8 @@
 from .ball_base import BallBase
 
 class BallSimple(BallBase):
+    """A simple ball that is good on performance, and more rigid than the complex ball.
+    """
     def __init__(self, center_x, center_y, size, **kwargs):
         num_steps = 10
         stiffness_outer = 0.5

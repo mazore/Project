@@ -5,6 +5,10 @@ from parameters import Parameters
 from particle import Particle
 
 class Square(Body):
+    """The simplest of the bodies, just 4 particles connected by constraints to form a square that
+    holds it's shape. Stiffness, bounciness, and mass can be customized, and the body can be given
+    and initial impulse to start it moving.
+    """
     def __init__(self, center_x, center_y, width, height, mass=20, bounciness=0.2, stiffness=0.05, initial_impulse=None, **kwargs):
         num_particles = 4
         material = Material(0.2, bounciness, mass / num_particles)

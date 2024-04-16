@@ -8,6 +8,7 @@ from vector2 import Vector2
 
 # Optimal steps per frame: 2
 class Cloth(Body):
+    """A grid of particles and constraints that simulates a cloth."""
     def __init__(self, center_x, center_y, num_rows, num_cols, node_spacing, mass=100, stiffness=1, initial_impulse=None, **kwargs):
         fixed_material = Material(0, 0, 0)
         material = Material(0.2, 0.2, mass / num_rows / num_cols)
@@ -22,7 +23,7 @@ class Cloth(Body):
                 particle_x = left_x + col_number * node_spacing
                 particle_y = top_y + row_number * node_spacing
                 mat = fixed_material if row_number == 0 else material
-                row.append(Particle(mat, particle_x, particle_y, 0))
+                row.append(Particle(mat, particle_x, particle_y, 2))
             particles.append(row)
 
         constraints = []

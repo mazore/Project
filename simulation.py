@@ -10,9 +10,12 @@ SW = Parameters.SIMULATION_WIDTH
 SH = Parameters.SIMULATION_HEIGHT
 
 class Simulation:
+    """Manages all bodies necessary in the scene. It creates a pygame canvas, configures it, and
+    runs the mainloop.
+    """
     def __init__(self, bodies, steps_per_frame=4):
         self.bodies = bodies
-        self.grabbed_particle = None
+        self.grabbed_particle = None  # If a particle is grabbed by the mouse
 
         Parameters.STEPS_PER_FRAME = steps_per_frame
         Parameters.TIME_DELTA = 1 / steps_per_frame
@@ -25,6 +28,7 @@ class Simulation:
             Boundary(Vector2(0, 0), Vector2(0, SH)),
         ]
 
+        # Setup pygame
         pg.init()
         self.canvas = pg.display.set_mode((Parameters.SIMULATION_WIDTH, Parameters.SIMULATION_HEIGHT))
         pg.display.set_caption('Soft Body Simulation')
@@ -33,10 +37,15 @@ class Simulation:
             body.apply_initial_impulses()
 
     def mainloop(self):
+        """First checks the user input for mouse actions (dragging bodies), quits if pygame has sent
+        that event, simulates the movement of all particles and constraints, and renders all bodies.
+        Makes sure the frame rate is not exceeded
+        """
         while True:
+            frame_start = time.time_ns()
+
             self.check_user_input()
 
-            frame_start = time.time_ns()
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
@@ -54,6 +63,7 @@ class Simulation:
                 pg.time.delay(int(inter_frame_delay - compute_time))
 
     def simulate(self):
+        """Simulates Verlet integration on all particles and spring (Hooke's) physics on all constraints"""
         for _ in range(Parameters.STEPS_PER_FRAME):
             for body in self.bodies:
                 other_bodies = [b for b in self.bodies if b.id != body.id]
@@ -68,14 +78,14 @@ class Simulation:
                     constraint.update()
 
     def render(self):
+        """Renders all bodies on the canvas"""
         self.canvas.fill((255, 255, 255))  # White background
         for body in self.bodies:
             body.draw(self.canvas)
-        for boundary in self.static_boundaries:
-            pg.draw.line(self.canvas, (255, 48, 48), boundary.p1.intTuple(), boundary.p2.intTuple(), 1)
         pg.display.update()
 
     def check_user_input(self):
+        """Checks for mouse grabbing a particle and applies a force to it if it is grabbed"""
         if pg.mouse.get_pressed()[0]:  # Left click
             if self.grabbed_particle is None:
                 closest = self.closest_particle_to_mouse()
@@ -89,6 +99,10 @@ class Simulation:
             self.grabbed_particle = None
 
     def closest_particle_to_mouse(self):
+        """Finds the closest particle to the mouse cursor and returns a tuple containing it and the
+        distance from the mouse to it, squared. This is used to avoid taking the square root, which
+        is slow
+        """
         mouse_pos = Vector2(*pg.mouse.get_pos())
         closest = None
         closest_dist = math.inf
